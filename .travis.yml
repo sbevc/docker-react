@@ -1,0 +1,13 @@
+sudo: required  # required by docker
+services:
+  - docker  # docker is required to run our tests
+
+# Before we run our main task (test, deploy, etc)
+before_install:
+  - docker build -f dev.Dockerfile -t TESTS_IMAGE .
+
+
+# Commands to execute our task, test in this case
+# Fail on exit-code != 1
+script:
+  - docker run -e CI=true TESTS_IMAGE npm run test -- --coverage
